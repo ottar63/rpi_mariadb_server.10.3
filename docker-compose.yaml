@@ -1,0 +1,64 @@
+version: "3"
+services:
+    server:
+        image: ottar63/rpi_mariadb_server.10.3
+        #deploy: 
+            #placement:
+            #    constraints: [node.labels.role == dbserver]
+        ports:
+            - "3306:3306"
+        networks:
+            - mariadb
+        volumes:
+            - "/opt/mariadb:/var/lib/mysql"
+        environment:
+            - MYSQL_ROOT_PASSWORD=secret
+        container_name: server
+    cli:
+        image: ottar63/rpi_mysql_python_test
+        ports:
+            - "4000:80"
+        deploy:
+            replicas: 3
+            #placement:
+            #    constraints: [node.labels.role == dbclient]
+        networks:
+            - mariadb
+        container_name: client
+        #entrypoint: bash
+#    agent:
+#        image: portainer/agent
+#        environment:
+#        # REQUIRED: Should be equal to the service name prefixed by "tasks." when
+#        # deployed inside an overlay network
+#            AGENT_CLUSTER_ADDR: tasks.agent
+#        # AGENT_PORT: 9001
+#        # LOG_LEVEL: debug
+#        volumes:
+#            - /var/run/docker.sock:/var/run/docker.sock
+#            - /var/lib/docker/volumes:/var/lib/docker/volumes
+#        networks:
+#            - mariadb
+#        deploy:
+#            mode: global
+#            placement:
+#                constraints: [node.platform.os == linux]
+#
+#    portainer:
+#        image: portainer/portainer
+#        command: -H tcp://tasks.agent:9001 --tlsskipverify
+#        ports:
+#            - "9000:9000"
+#        volumes:
+#            - portainer_data:/data
+#        networks:
+#            - mariadb
+#        deploy:
+#            mode: replicated
+#            replicas: 1
+#            placement:
+#                constraints: [node.role == manager]
+networks:
+    mariadb:
+#volumes:
+#    portainer_data:
