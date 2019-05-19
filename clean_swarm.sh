@@ -13,6 +13,8 @@ sleep 10
 # remove nodes from master
 for THIS in $WORKER
     do
+        echo "remove node $THIS"
         docker node rm $THIS
+        sleep 5
     done
 docker swarm leave --force
