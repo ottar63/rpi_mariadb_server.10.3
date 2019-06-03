@@ -1,6 +1,6 @@
 #!/bin/sh
 MASTER=kube-master
-WORKER="kube-node1 kube-node2 "
+WORKER="docker-node1 "
 
 #Start swarm on master
 docker swarm init
@@ -14,11 +14,11 @@ echo "Join token for Worker :$WORK_TOKEN"
 
 for THIS in $WORKER
     do
-        ssh $THIS "docker swarm join --token=$WORK_TOKEN" 10.12.1.41:2377
+        ssh $THIS "docker swarm join --token=$WORK_TOKEN" 10.12.1.51:2377
     done
 
 # label nodes for master
- docker node update --label-add role=dbserver kube-master 
+ docker node update --label-add role=dbserver docker-master 
 #
 # label node for workers
 for THIS in $WORKER

@@ -2,7 +2,7 @@
 #
 #  Tear down swarm
 #
-WORKER="kube-node1 kube-node2 "
+WORKER="docker-node1 "
 
 for THIS in $WORKER
     do
